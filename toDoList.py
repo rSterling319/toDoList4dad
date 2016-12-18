@@ -280,6 +280,9 @@ def saveTasks():
 	
 	messagebox.showinfo("Saved", "Your To-Do-List has been saved!")
 
+def about():
+	messagebox.showinfo("About", "\t\tTo-do-list\n\nA program to help organize and keep track\nof tasks.\n\n\t\tCreated by:\n\t   Richard Sterling")
+
 
 #open the file and read into list tasks
 with open("toDoSave.csv") as f_obj:
@@ -293,6 +296,33 @@ for item in tasks:
 	for value in item.keys():
 		print (item[value])
 """
+
+#PlaceHolder function to test buttons/menus/etc
+def hello():
+	print("hello")
+	
+#create menuBar at top of root
+menubar = tkinter.Menu(root)
+root.config(menu=menubar)
+
+# create a pulldown menu, and add it to the menu bar
+filemenu = tkinter.Menu(menubar, tearoff=0)
+filemenu.add_command(label="Save", command=saveTasks)
+filemenu.add_separator()
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+
+# create edit menu
+editmenu = tkinter.Menu(menubar, tearoff=0)
+editmenu.add_command(label="Add a new Task", command=add_task)
+editmenu.add_command(label="Copy", command=hello)
+editmenu.add_command(label="Paste", command=hello)
+menubar.add_cascade(label="Edit", menu=editmenu)
+
+#create help menu
+helpmenu = tkinter.Menu(menubar, tearoff=0)
+helpmenu.add_command(label="About", command=about)
+menubar.add_cascade(label="Help", menu=helpmenu)
 
 
 
