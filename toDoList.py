@@ -27,13 +27,16 @@ Stats to keep track of:
 
 """
 
-#Create The GUI Elements
+
 import tkinter
 from tkinter import messagebox
 import random
-#import taskClass
+#This is for the save and write functions
 import csv
+#For sorting dictionaries
+from operator import itemgetter
 
+#Create The GUI Elements
 #create root window
 root = tkinter.Tk()
 
@@ -238,14 +241,15 @@ def delOne():
 	update_listbox()
 	
 def sortAsc():
-	tasks.sort()
+	global tasks
+	tasks = sorted(tasks, key=itemgetter('tName'))
 	#update the list box
 	update_listbox()
 	
 def sortDsc():
-	tasks.sort()
+	global tasks
 	#reverse lists
-	tasks.reverse()
+	tasks = sorted(tasks, key=itemgetter('tName'), reverse = True)
 	#update the list box
 	update_listbox()
 
