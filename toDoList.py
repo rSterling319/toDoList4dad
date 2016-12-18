@@ -47,7 +47,7 @@ root.configure(bg="white")
 root.title("To-Do-List")
 
 #set the window size
-root.geometry("300x300+250+50")
+root.geometry("300x325+250+50")
 
 #create empty list
 tasks = []
@@ -280,6 +280,74 @@ def saveTasks():
 	
 	messagebox.showinfo("Saved", "Your To-Do-List has been saved!")
 
+def viewTask():
+	#function to view the selected task details
+			
+	#create pop up window to display details of selected task
+	viewTask_PopUp = tkinter.Toplevel()
+	viewTask_PopUp.title("Task Details")
+	viewTask_PopUp.title("Task Details")
+	viewTask_PopUp.geometry("300x400+575+0")
+	
+	task = lb_tasks.get("active")
+	#confirm in the list
+	for item in tasks:
+		if item["tName"] == task:
+			selTask = item
+	#tName|tDescription|tLocation|tTimeEst|tTimeStart|tTimeFinish|tCostEst|tCostAct|tPriority|tStatus
+	lbl_Name = tkinter.Label(viewTask_PopUp, text = "Task name: ", bg ="white",anchor = "w", justify = "left")
+	lbl_Name.grid(row=0, column =0)
+	lbl_taskName = tkinter.Label(viewTask_PopUp, text = selTask['tName'], bg ="white",justify = 'left',anchor = "w",)
+	lbl_taskName.grid(row=0, column =1)
+	
+	lbl_Priority = tkinter.Label(viewTask_PopUp, text = "Priority", bg ="white",justify = "left",anchor = "w")
+	lbl_Priority.grid(row=1, column =0)
+	lbl_taskPriority = tkinter.Label(viewTask_PopUp, text = selTask['tPriority'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskPriority.grid(row=1, column =1)
+	
+	lbl_Description = tkinter.Label(viewTask_PopUp, text = "Description:", bg ="white",justify = "left",anchor = "w")
+	lbl_Description.grid(row=2, column =0)
+	lbl_taskDescription = tkinter.Label(viewTask_PopUp, text = selTask['tDescription'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskDescription.grid(row=2, column =1)
+	
+	lbl_Location = tkinter.Label(viewTask_PopUp, text = "Location: ", bg ="white",justify = "left",anchor = "w")
+	lbl_Location.grid(row=3, column =0)
+	lbl_taskLocation = tkinter.Label(viewTask_PopUp, text = selTask['tLocation'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskLocation.grid(row=3, column =1)
+	
+	lbl_TimeEst = tkinter.Label(viewTask_PopUp, text = "Time Estimate: ", bg ="white",justify = "left",anchor = "w")
+	lbl_TimeEst.grid(row=4, column =0)
+	lbl_taskTimeEst = tkinter.Label(viewTask_PopUp, text = selTask['tTimeEst'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskTimeEst.grid(row=4, column =1)
+	
+	lbl_timeActual = tkinter.Label(viewTask_PopUp, text = "Time Actual: ", bg ="white",justify = "left",anchor = "w")
+	lbl_timeActual.grid(row=5, column =0)
+	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = str(int(selTask['tTimeFinish'])-int(selTask['tTimeStart'])), bg ="white",wraplength = 200, justify = "left")
+	lbl_taskTimeActual.grid(row=5, column =1)
+	
+	lbl_CostEst = tkinter.Label(viewTask_PopUp, text = "Cost Estimate: ", bg ="white",justify = "left",anchor = "w")
+	lbl_CostEst.grid(row=6, column =0)
+	lbl_taskCostEst = tkinter.Label(viewTask_PopUp, text = selTask['tCostEst'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskCostEst.grid(row=6, column =1)
+	
+	lbl_CostActual = tkinter.Label(viewTask_PopUp, text = "Actual Cost", bg ="white",justify = "left",anchor = "w")
+	lbl_CostActual.grid(row=7, column =0)
+	lbl_taskCostActual = tkinter.Label(viewTask_PopUp, text = selTask['tCostAct'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskCostActual.grid(row=7, column =1)
+	
+	lbl_Status = tkinter.Label(viewTask_PopUp, text = "Status", bg ="white",justify = "left",anchor = "w")
+	lbl_Status.grid(row=8, column =0)
+	lbl_taskStatus = tkinter.Label(viewTask_PopUp, text = selTask['tStatus'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskStatus.grid(row=8, column =1)
+	
+	btn_Done = tkinter.Button(viewTask_PopUp, text = "Done", fg = "green", bg = "white", command =viewTask_PopUp.destroy)
+	btn_Done.grid(row=10, column = 1)
+	
+	
+	
+	
+
+
 def about():
 	messagebox.showinfo("About", "\t\tTo-do-list\n\nA program to help organize and keep track\nof tasks.\n\n\t\tCreated by:\n\t   Richard Sterling")
 
@@ -359,11 +427,14 @@ btn_chooRand.grid(row=7, column =0)
 btn_numOfTasks = tkinter.Button(root, text = "Number of Tasks", fg = "green", bg = "white", command = numOfTasks )
 btn_numOfTasks.grid(row=8, column =0)
 
+btn_viewTask = tkinter.Button(root, text = "View Task Details", fg = "green", bg = "white", command = viewTask)
+btn_viewTask.grid(row=9, column = 0)
+
 btn_exit = tkinter.Button(root, text = "Exit", fg = "green", bg = "white", command = exit)
-btn_exit.grid(row=10, column =0)
+btn_exit.grid(row=12, column =0)
 
 btn_save = tkinter.Button(root, text = "Save", fg = "green", bg = "white", command = saveTasks)
-btn_save.grid(row=10, column = 1)
+btn_save.grid(row=12, column = 1)
 
 lb_tasks =  tkinter.Listbox(root)
 lb_tasks.grid(row=2, column =1, rowspan = 7)
