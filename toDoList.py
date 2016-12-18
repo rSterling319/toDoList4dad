@@ -215,9 +215,10 @@ def add_task():
 def markComplete():
 	task=lb_tasks.get("active")
 	for item in tasks:
-		if item.name == task:
+		if item["tName"] == task:
 			index = tasks.index(item)
 	lb_tasks.itemconfig(index, {"fg" :"red"})
+	item['tStatus'] = 'Completed!'
 		
 def delAll():
 	#create message box!
