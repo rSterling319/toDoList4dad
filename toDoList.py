@@ -97,46 +97,32 @@ def add_task():
 	
 	def addTaskIn():
 		#get the task to add #tName|tDescription|tLocation|tTimeEst|tTimeStart|tTimeFinish|tCostEst|tCostAct|tPriority|tStatus
-		tasks.append({"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": 0, "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get()})
-		print(tasks)
+		newTask = {"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": 0, "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get()}
 		
-		"""
-		#check if item is duplicate
-		for item in tasks:
-			if txt_addTast.get().capitalize() == item['tName']:
-				confirm = messagebox.askyesno("Duplicate Found", " %s already in To-Do-List!\n Do you want to add anyway?" %task.name.capitalize())
-				if confirm:
-					tasks.append({"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": 0, "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get()}
-					update_listbox()
-					################
-					
-					#check if already in list
-			if task not in tasks:
-				#append to list and capitalize
-				tasks.append(task)
-				#update the list box
-				update_listbox()
-				'''FIXME: For some reason not checking duplicate tried to fix up there^^ still doing adding'''
-			else:
-				confirm = messagebox.askyesno("Duplicate Found", " %s already in To-Do-List!\n Do you want to add anyway?" %task.name.capitalize())
-				if confirm:
-					tasks.append(task)
-					update_listbox()
-		"""
+		duplicate = False
 		
-		"""HOLY SHIT THIS IS BROKEN!! WHAT DID I DO?!?!"""
-		name = txt_addTask.get()
 		#make sure !empty
 		if txt_addTask.get() != "":
 			
+			#tasks.append(newTask)
+			#update_listbox()
+			
 			for item in tasks:
-				print(name.capitalize(), " ", item['tName'])
-				if name.capitalize() == item['tName']:
-					confirm = messagebox.askyesno("Duplicate Found", " %s already in To-Do-List!\n Do you want to add anyway?" %name.capitalize())
+				if newTask['tName'] == item['tName']:
+					confirm = messagebox.askyesno("Duplicate Found", " %s already in To-Do-List!\n Do you want to add anyway?" %newTask["tName"].capitalize())
 					if confirm:
-						addTaskIn()
+						tasks.append(newTask)
 						update_listbox()
+						duplicate = True
 						break
+					else:
+						break
+				else:
+					continue
+			if not duplicate:
+				tasks.append(newTask)
+				update_listbox()
+				
 				
 		else:
 			#create an error message warning nothing was entered
@@ -150,7 +136,8 @@ def add_task():
 		addPriority.set("None")
 		addStatus.set("Planned")
 		
-		
+
+				
 		
 	
 	
@@ -217,6 +204,7 @@ def add_task():
 	#Exit popup
 	btn_Done = tkinter.Button(add_task_PopUp, text = "Done", fg = "green", bg = "white", command =add_task_PopUp.destroy)
 	btn_Done.grid(row=10, column = 1)
+	
 	
 
 	
