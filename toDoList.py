@@ -232,7 +232,7 @@ def delOne():
 	task = lb_tasks.get("active")
 	#confirm in the list
 	for item in tasks:
-		if item.name == task:
+		if item["tName"] == task:
 			tasks.remove(item)
 	#update the list box
 	update_listbox()
