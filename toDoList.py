@@ -218,6 +218,7 @@ def markComplete():
 		if item["tName"] == task:
 			index = tasks.index(item)
 	lb_tasks.itemconfig(index, {"fg" :"red"})
+	item = tasks[index]
 	item['tStatus'] = 'Completed!'
 		
 def delAll():
