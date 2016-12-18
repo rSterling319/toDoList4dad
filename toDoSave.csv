@@ -1,0 +1,3 @@
+tName,tTimeStart,tLocation,tStatus,tPriority,tDescription,tTimeEst,tTimeFinish,tCostEst,tCostAct
+Task,0,loc,Planned,None,des,None,0,None,0
+Task2,0,loc2,Planned,None,desc2,None,0,None,0
