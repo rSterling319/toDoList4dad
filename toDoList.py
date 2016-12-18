@@ -258,7 +258,7 @@ def chooRand():
 	#choose a random task
 	task = random.choice(tasks)
 	#update display label
-	lbl_display["text"]=task.name
+	lbl_display["text"]=task["tName"]
 	
 def numOfTasks():
 	#get number of tasks
