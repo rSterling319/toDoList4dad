@@ -372,17 +372,38 @@ def filterTasks():
 	viewFilter_PopUp = tkinter.Toplevel()
 	viewFilter_PopUp.title("Filter Tasks")
 	viewFilter_PopUp.title("Filter Tasks")
-	viewFilter_PopUp.geometry("400x400+575+0")
+	viewFilter_PopUp.geometry("450x400+575+0")
 	
+	#priority drop down
 	priority = tkinter.StringVar(viewFilter_PopUp)
-	priority.set("Priority")
+	priority.set("Priority..")
 	drp_Priority = tkinter.OptionMenu(viewFilter_PopUp, priority, "None", "Low", "Med", "High")
 	drp_Priority.grid(row = 0, column =0)
 	
+	#time estimate drop down
+	timeEst = tkinter.StringVar(viewFilter_PopUp)
+	timeEst.set("Time Estimate..")
+	drp_TimeEst = tkinter.OptionMenu(viewFilter_PopUp, timeEst, "None", "Short", "Med", "Long")
+	drp_TimeEst.grid(row=1, column = 0)
+	
+	#cost Estimate drop down
+	costEst = tkinter.StringVar(viewFilter_PopUp)
+	costEst.set("Cost Estimate..")
+	drp_CostEst = tkinter.OptionMenu(viewFilter_PopUp, costEst, "None ($0)", "Low  (<$150)", "Med  ($150-$500)", "High  ($500-$1500)", "Very High  (>$1500)")
+	drp_CostEst.grid(row=2, column = 0)
+	
+	#status drop down
+	status = tkinter.StringVar(viewFilter_PopUp)
+	status.set("Status..")
+	drp_Status = tkinter.OptionMenu(viewFilter_PopUp, status, "Planned", "Started", "Waiting", "50%", "90%", "Completed!")
+	drp_Status.grid(row=3,column=0)
+	
+	#listbox
 	lb_filterListbox = tkinter.Listbox(viewFilter_PopUp)
 	lb_filterListbox.config(width = 40, height = 20)
-	lb_filterListbox.grid(row= 5, column = 1, rowspan = 7, columnspan = 4)
+	lb_filterListbox.grid(row= 1, column = 1, rowspan = 7, columnspan = 4)
 	
+	#ok button
 	btn_okBtn = tkinter.Button(viewFilter_PopUp, text = "Ok", command = updateListFilter)
 	btn_okBtn.grid(row = 15, column = 0)
 	
