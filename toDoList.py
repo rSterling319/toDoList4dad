@@ -361,23 +361,59 @@ def about():
 def filterTasks():
 	def updateListFilter():
 		lb_filterListbox.delete(0, 'end')
+		#a little boolean stuff to add to the titles
+		if chk_Priority.get():
+			printPriority = "\nPriority = " + priority.get()
+			headPriority = "\tPriority"
+		else:
+			printPriority = ""
+			headPriority = ""
+		if chk_TimeEst.get():
+			printTimeEst = "\nTime Estimate = " + timeEst.get()
+			headTimeEst = "\tTimeEst"
+		else:
+			printTimeEst =""
+			headTimeEst =""
+		if chk_CostEst.get():
+			printCostEst = "\nCost Estimate = " + costEst.get()
+			headCostEst = "\tCostEst"
+		else:
+			printCostEst = ""
+			headCostEst =""
+		if chk_Status.get():
+			printStatus = "\nStatus = " + status.get()
+			headStatus = "\tStatus"
+		else:
+			printStatus = ""
+			headStatus =""
+			
+		lbl_filterResults["text"] = "Filtered Results by:" + printPriority + printTimeEst + printCostEst + printStatus
+		
+		"""FIXME Stat here:
+				Need to actually apply the filter and populate listbox
+				Might be a million if then statements.. ugh.. Figure it out dude.
+		"""
 		#populate the list box
+		lb_filterListbox.insert("end", "Name" + headPriority + headTimeEst + headCostEst + headStatus)
 		for item in tasks:
 			if item['tPriority'] == priority.get():
-				print(item['tPriority'])
 				lb_filterListbox.insert("end", item["tName"]+ '\t' + item['tPriority'])
 		
+		#reset drop down boxes/uncheck any boxes
 		status.set("Status..")
 		priority.set("Priority..")
 		timeEst.set("Time Estimate..")
 		costEst.set("Cost Estimate..")
-			
+		chk_CostEstBox.deselect()
+		chk_StatusBox.deselect()
+		chk_TimeEstBox.deselect()
+		chk_PriorityBox.deselect()
 			
 	#create pop up window to display details of selected task
 	viewFilter_PopUp = tkinter.Toplevel()
 	viewFilter_PopUp.title("Filter Tasks")
 	viewFilter_PopUp.title("Filter Tasks")
-	viewFilter_PopUp.geometry("500x400+575+0")
+	viewFilter_PopUp.geometry("600x600+575+0")
 	
 	#Labels across top
 	lbl_onOff = tkinter.Label(viewFilter_PopUp, text = "On/Off", bg = "white")
@@ -395,8 +431,8 @@ def filterTasks():
 	drp_Priority = tkinter.OptionMenu(viewFilter_PopUp, priority, "None", "Low", "Med", "High")
 	drp_Priority.grid(row = 1, column =1)
 	#Priority check box
-	chk_Priority=tkinter.BooleanVar()
-	chk_PriorityBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_Priority, onvalue="RGB", offvalue="L")
+	chk_Priority=tkinter.BooleanVar(viewFilter_PopUp)
+	chk_PriorityBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_Priority, onvalue= True, offvalue= False)
 	chk_PriorityBox.grid(row=1, column = 0)
 	
 	#time estimate drop down
@@ -406,7 +442,7 @@ def filterTasks():
 	drp_TimeEst.grid(row=2, column = 1)
 	#TimeEst check box
 	chk_TimeEst=tkinter.BooleanVar()
-	chk_TimeEstBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_TimeEst, onvalue="RGB", offvalue="L")
+	chk_TimeEstBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_TimeEst, onvalue=True, offvalue=False)
 	chk_TimeEstBox.grid(row=2, column = 0)
 	
 	#cost Estimate drop down
@@ -416,7 +452,7 @@ def filterTasks():
 	drp_CostEst.grid(row=3, column = 1)
 	#cost Est check box
 	chk_CostEst=tkinter.BooleanVar()
-	chk_CostEstBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_CostEst, onvalue="RGB", offvalue="L")
+	chk_CostEstBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_CostEst, onvalue=True, offvalue=False)
 	chk_CostEstBox.grid(row=3, column = 0)
 	
 	#status drop down
@@ -426,13 +462,13 @@ def filterTasks():
 	drp_Status.grid(row=4,column=1)
 	#status check box
 	chk_Status=tkinter.BooleanVar()
-	chk_StatusBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_Status, onvalue="RGB", offvalue="L")
+	chk_StatusBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_Status, onvalue=True, offvalue=False)
 	chk_StatusBox.grid(row=4, column = 0)
 	
 	#listbox
 	lb_filterListbox = tkinter.Listbox(viewFilter_PopUp)
 	lb_filterListbox.config(width = 40, height = 20)
-	lb_filterListbox.grid(row= 1, column = 3, rowspan = 7, columnspan = 4)
+	lb_filterListbox.grid(row= 2, column = 3, rowspan = 7, columnspan = 4)
 	
 	#ok button
 	btn_okBtn = tkinter.Button(viewFilter_PopUp, text = "Ok", command = updateListFilter)
