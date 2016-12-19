@@ -359,6 +359,43 @@ def about():
 	
 
 def filterTasks():
+	
+	def filterItems(item):
+		#create two lists, empty and full of boolean values of the check boxes
+		itemHasList =[]
+		print("Item Has List = %s" %itemHasList)
+		checkBoxList = [chk_Priority.get(), chk_TimeEst.get(), chk_CostEst.get(),chk_Status.get()]
+		if chk_Priority.get() and item['tPriority'] == priority.get():
+			retPriority = "     "+ priority.get()
+			itemHasList.append(chk_Priority.get())
+		else:
+			retPriority =""
+			itemHasList.append(False)
+		if chk_TimeEst.get() and item['tTimeEst'] == timeEst.get():
+			retTimeEst = "     "+timeEst.get()
+			itemHasList.append(chk_TimeEst.get())
+		else:
+			retTimeEst = ""
+			itemHasList.append(False)
+		if chk_CostEst.get() and item['tCostEst'] == costEst.get():
+			retCostEst = "     " +costEst.get()
+			itemHasList.append(chk_CostEst.get())
+		else:
+			retCostEst = ""
+			itemHasList.append(False)
+		if chk_Status.get() and item['tStatus'] == status.get():
+			retStatus = "     "+status.get()
+			itemHasList.append(chk_Status.get())
+		else:
+			retStatus = ""
+			itemHasList.append(False)
+		print("Item Has List = %s" %itemHasList)
+		print("Check Box List = %s" %checkBoxList)
+		if checkBoxList == itemHasList:
+			return (True, item['tName'] + retPriority + retTimeEst +retCostEst + retStatus)
+		else:
+			return(False, "Not in it")
+	
 	def updateListFilter():
 		lb_filterListbox.delete(0, 'end')
 		#a little boolean stuff to add to the titles
@@ -394,10 +431,16 @@ def filterTasks():
 				Might be a million if then statements.. ugh.. Figure it out dude.
 		"""
 		#populate the list box
+		boolT = False
+		stringT =""
+		#first line of list box (headers)
 		lb_filterListbox.insert("end", "Name" + headPriority + headTimeEst + headCostEst + headStatus)
 		for item in tasks:
-			if item['tPriority'] == priority.get():
-				lb_filterListbox.insert("end", item["tName"]+ '\t' + item['tPriority'])
+			boolT, stringT = filterItems(item)
+			if boolT:
+				lb_filterListbox.insert("end", stringT)
+			else:
+				continue
 		
 		#reset drop down boxes/uncheck any boxes
 		status.set("Status..")
