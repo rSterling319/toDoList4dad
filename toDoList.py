@@ -217,9 +217,11 @@ def markComplete():
 	for item in tasks:
 		if item["tName"] == task:
 			index = tasks.index(item)
-	lb_tasks.itemconfig(index, {"fg" :"red"})
+	
 	item = tasks[index]
-	item['tStatus'] = 'Completed!'
+	item['tStatus'] = markStatus.get()
+	update_listbox()
+	markStatus.set("Change Status..")#initial value
 		
 def delAll():
 	#create message box!
@@ -398,17 +400,21 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 lbl_title = tkinter.Label(root, text = "To-Do-List", bg = "white")
 lbl_title.grid(row=0, column =0)
 
-lbl_display = tkinter.Label(root, text="Enter a task Here:", bg ="white")
-lbl_display.grid(row=0, column =1)
+#lbl_display = tkinter.Label(root, text="Enter a task Here:", bg ="white")
+#lbl_display.grid(row=0, column =1)
 
-txt_input = tkinter.Entry(root, width = 15)
-txt_input.grid(row=1, column = 1)
+#txt_input = tkinter.Entry(root, width = 15)
+#txt_input.grid(row=1, column = 1)
 
 btn_addTask = tkinter.Button(root, text = "Add Task", fg = "green", bg = "white", command = add_task)
 btn_addTask.grid(row=1, column =0)
 
-btn_markComplete = tkinter.Button(root, text = "Mark as Complete", fg = "green", bg="white", command = markComplete)
-btn_markComplete.grid(row=2, column = 0)
+btn_markComplete = tkinter.Button(root, text = "ok", fg = "green", bg="white", command = markComplete)
+btn_markComplete.grid(row=1, column = 1)
+markStatus = tkinter.StringVar(root)
+markStatus.set("Change Status..")#initial value
+drp_markStatus = tkinter.OptionMenu(root, markStatus,"Planned", "Started", "Waiting", "50%", "90%", "Completed!")
+drp_markStatus.grid(row =0, column = 1)
 
 btn_delAll = tkinter.Button(root, text = "Delete All", fg = "green", bg = "white", command =delAll )
 btn_delAll.grid(row=3, column =0)
@@ -438,7 +444,7 @@ btn_save = tkinter.Button(root, text = "Save", fg = "green", bg = "white", comma
 btn_save.grid(row=12, column = 1)
 
 lb_tasks =  tkinter.Listbox(root)
-lb_tasks.grid(row=2, column =1, rowspan = 7)
+lb_tasks.grid(row=3, column =1, rowspan = 7)
 
 update_listbox()
 
