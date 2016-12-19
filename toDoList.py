@@ -353,6 +353,39 @@ def viewTask():
 
 def about():
 	messagebox.showinfo("About", "\t\tTo-do-list\n\nA program to help organize and keep track\nof tasks.\n\n\t\tCreated by:\n\t   Richard Sterling")
+	
+
+	
+	
+
+def filterTasks():
+	def updateListFilter():
+		lb_filterListbox.delete(0, 'end')
+		#populate the list box
+		for item in tasks:
+			if item['tPriority'] == priority.get():
+				print(item['tPriority'])
+				lb_filterListbox.insert("end", item["tName"]+ '\t' + item['tPriority'])
+			
+			
+	#create pop up window to display details of selected task
+	viewFilter_PopUp = tkinter.Toplevel()
+	viewFilter_PopUp.title("Filter Tasks")
+	viewFilter_PopUp.title("Filter Tasks")
+	viewFilter_PopUp.geometry("400x400+575+0")
+	
+	priority = tkinter.StringVar(viewFilter_PopUp)
+	priority.set("Priority")
+	drp_Priority = tkinter.OptionMenu(viewFilter_PopUp, priority, "None", "Low", "Med", "High")
+	drp_Priority.grid(row = 0, column =0)
+	
+	lb_filterListbox = tkinter.Listbox(viewFilter_PopUp)
+	lb_filterListbox.config(width = 40, height = 20)
+	lb_filterListbox.grid(row= 5, column = 1, rowspan = 7, columnspan = 4)
+	
+	btn_okBtn = tkinter.Button(viewFilter_PopUp, text = "Ok", command = updateListFilter)
+	btn_okBtn.grid(row = 15, column = 0)
+	
 
 
 #open the file and read into list tasks
@@ -428,14 +461,17 @@ btn_sortAsc.grid(row=5, column =0)
 btn_sortDsc = tkinter.Button(root, text = "Sort Decending", fg = "green", bg = "white", command = sortDsc)
 btn_sortDsc.grid(row=6, column =0)
 
+btn_filter = tkinter.Button(root, text = "Filter Tasks", fg = "green", bg = "white", command = filterTasks)
+btn_filter.grid(row=7, column =0)
+
 btn_chooRand = tkinter.Button(root, text = "Choose Random", fg = "green", bg = "white", command = chooRand)
-btn_chooRand.grid(row=7, column =0)
+btn_chooRand.grid(row=8, column =0)
 
 btn_numOfTasks = tkinter.Button(root, text = "Number of Tasks", fg = "green", bg = "white", command = numOfTasks )
-btn_numOfTasks.grid(row=8, column =0)
+btn_numOfTasks.grid(row=9, column =0)
 
 btn_viewTask = tkinter.Button(root, text = "View Task Details", fg = "green", bg = "white", command = viewTask)
-btn_viewTask.grid(row=9, column = 0)
+btn_viewTask.grid(row=10, column = 0)
 
 btn_exit = tkinter.Button(root, text = "Exit", fg = "green", bg = "white", command = exit)
 btn_exit.grid(row=12, column =0)
