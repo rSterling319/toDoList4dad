@@ -366,47 +366,81 @@ def filterTasks():
 			if item['tPriority'] == priority.get():
 				print(item['tPriority'])
 				lb_filterListbox.insert("end", item["tName"]+ '\t' + item['tPriority'])
+		
+		status.set("Status..")
+		priority.set("Priority..")
+		timeEst.set("Time Estimate..")
+		costEst.set("Cost Estimate..")
 			
 			
 	#create pop up window to display details of selected task
 	viewFilter_PopUp = tkinter.Toplevel()
 	viewFilter_PopUp.title("Filter Tasks")
 	viewFilter_PopUp.title("Filter Tasks")
-	viewFilter_PopUp.geometry("450x400+575+0")
+	viewFilter_PopUp.geometry("500x400+575+0")
+	
+	#Labels across top
+	lbl_onOff = tkinter.Label(viewFilter_PopUp, text = "On/Off", bg = "white")
+	lbl_onOff.grid(row=0, column =0)
+	
+	lbl_filter = tkinter.Label(viewFilter_PopUp, text = "Filter", bg = "white")
+	lbl_filter.grid(row=0, column =1)
+	
+	lbl_filterResults = tkinter.Label(viewFilter_PopUp, text = "Filtered Results", bg = "white")
+	lbl_filterResults.grid(row=0, column =3)
 	
 	#priority drop down
 	priority = tkinter.StringVar(viewFilter_PopUp)
 	priority.set("Priority..")
 	drp_Priority = tkinter.OptionMenu(viewFilter_PopUp, priority, "None", "Low", "Med", "High")
-	drp_Priority.grid(row = 0, column =0)
+	drp_Priority.grid(row = 1, column =1)
+	#Priority check box
+	chk_Priority=tkinter.BooleanVar()
+	chk_PriorityBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_Priority, onvalue="RGB", offvalue="L")
+	chk_PriorityBox.grid(row=1, column = 0)
 	
 	#time estimate drop down
 	timeEst = tkinter.StringVar(viewFilter_PopUp)
 	timeEst.set("Time Estimate..")
 	drp_TimeEst = tkinter.OptionMenu(viewFilter_PopUp, timeEst, "None", "Short", "Med", "Long")
-	drp_TimeEst.grid(row=1, column = 0)
+	drp_TimeEst.grid(row=2, column = 1)
+	#TimeEst check box
+	chk_TimeEst=tkinter.BooleanVar()
+	chk_TimeEstBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_TimeEst, onvalue="RGB", offvalue="L")
+	chk_TimeEstBox.grid(row=2, column = 0)
 	
 	#cost Estimate drop down
 	costEst = tkinter.StringVar(viewFilter_PopUp)
 	costEst.set("Cost Estimate..")
 	drp_CostEst = tkinter.OptionMenu(viewFilter_PopUp, costEst, "None ($0)", "Low  (<$150)", "Med  ($150-$500)", "High  ($500-$1500)", "Very High  (>$1500)")
-	drp_CostEst.grid(row=2, column = 0)
+	drp_CostEst.grid(row=3, column = 1)
+	#cost Est check box
+	chk_CostEst=tkinter.BooleanVar()
+	chk_CostEstBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_CostEst, onvalue="RGB", offvalue="L")
+	chk_CostEstBox.grid(row=3, column = 0)
 	
 	#status drop down
 	status = tkinter.StringVar(viewFilter_PopUp)
 	status.set("Status..")
 	drp_Status = tkinter.OptionMenu(viewFilter_PopUp, status, "Planned", "Started", "Waiting", "50%", "90%", "Completed!")
-	drp_Status.grid(row=3,column=0)
+	drp_Status.grid(row=4,column=1)
+	#status check box
+	chk_Status=tkinter.BooleanVar()
+	chk_StatusBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_Status, onvalue="RGB", offvalue="L")
+	chk_StatusBox.grid(row=4, column = 0)
 	
 	#listbox
 	lb_filterListbox = tkinter.Listbox(viewFilter_PopUp)
 	lb_filterListbox.config(width = 40, height = 20)
-	lb_filterListbox.grid(row= 1, column = 1, rowspan = 7, columnspan = 4)
+	lb_filterListbox.grid(row= 1, column = 3, rowspan = 7, columnspan = 4)
 	
 	#ok button
 	btn_okBtn = tkinter.Button(viewFilter_PopUp, text = "Ok", command = updateListFilter)
 	btn_okBtn.grid(row = 15, column = 0)
 	
+	#Close Button
+	btn_closeBtn = tkinter.Button(viewFilter_PopUp, text = "Close", command = viewFilter_PopUp.destroy)
+	btn_closeBtn.grid(row = 15, column = 3)
 
 
 #open the file and read into list tasks
