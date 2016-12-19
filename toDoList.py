@@ -54,16 +54,6 @@ tasks = []
 #open save file
 saveFile = open("toDoSave.csv",'r')
 
-"""FIXME does not work yet
-	-this seems really inefficient.. there has got to be an easier way--also does not work
-"""
-
-
-
-
-print(tasks)
-#for Testing defalut list
-#tasks = ["Pick up Poo", "Do Dishes", "Exercise"]
 #functions
 def csv_dict_reader(file_obj):
 	"""
@@ -426,10 +416,6 @@ def filterTasks():
 			
 		lbl_filterResults["text"] = "Filtered Results by:" + printPriority + printTimeEst + printCostEst + printStatus
 		
-		"""FIXME Stat here:
-				Need to actually apply the filter and populate listbox
-				Might be a million if then statements.. ugh.. Figure it out dude.
-		"""
 		#populate the list box
 		boolT = False
 		stringT =""
@@ -598,9 +584,11 @@ btn_sortDsc.grid(row=6, column =0)
 btn_filter = tkinter.Button(root, text = "Filter Tasks", fg = "green", bg = "white", command = filterTasks)
 btn_filter.grid(row=7, column =0)
 
+"""FIXME -- previously updated label -- label no longer exists"""
 btn_chooRand = tkinter.Button(root, text = "Choose Random", fg = "green", bg = "white", command = chooRand)
 btn_chooRand.grid(row=8, column =0)
 
+"""FIXME --Previously updated label --- label no longer exists"""
 btn_numOfTasks = tkinter.Button(root, text = "Number of Tasks", fg = "green", bg = "white", command = numOfTasks )
 btn_numOfTasks.grid(row=9, column =0)
 
