@@ -35,6 +35,8 @@ import random
 import csv
 #For sorting dictionaries
 from operator import itemgetter
+#for date and time function
+import datetime
 
 #Create The GUI Elements
 #create root window
@@ -55,6 +57,18 @@ tasks = []
 saveFile = open("toDoSave.csv",'r')
 
 #functions
+def convertToTime(aString):
+	if aString == '0':
+		return 0
+	else:
+		year= int(aString[0:4])
+		month= int(aString[5:7])
+		day= int(aString[8:10])
+		hour= int(aString[11:13])
+		minute= int(aString[14:16])
+		second= int(aString[17:19])
+		return datetime.datetime(year, month, day, hour, minute, second)
+	
 def csv_dict_reader(file_obj):
 	"""
 	Read a CSV file using a csv.DictReader
@@ -64,6 +78,14 @@ def csv_dict_reader(file_obj):
 	for line in reader:
 		tasks.append(line)
 	
+	#Iterate throught time and convert to type datetime.datetime
+	"""FIXME add for tTimeFinish"""
+	for item in tasks:
+		item['tTimeStart'] = convertToTime(item['tTimeStart'])
+	
+		
+	"""FIXME - need to convert the time read in to date time
+	"""
 	
 def update_listbox():
 	#clear listbox
@@ -90,7 +112,7 @@ def add_task():
 	
 	def addTaskIn():
 		#get the task to add #tName|tDescription|tLocation|tTimeEst|tTimeStart|tTimeFinish|tCostEst|tCostAct|tPriority|tStatus
-		newTask = {"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": 0, "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get()}
+		newTask = {"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": datetime.datetime.today(), "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get()}
 		
 		duplicate = False
 		
@@ -275,14 +297,13 @@ def saveTasks():
 
 def viewTask():
 	#function to view the selected task details
-			
+	task = lb_tasks.get("active")		
 	#create pop up window to display details of selected task
 	viewTask_PopUp = tkinter.Toplevel()
-	viewTask_PopUp.title("Task Details")
-	viewTask_PopUp.title("Task Details")
+	viewTask_PopUp.title(task) #displays task name as the window name
 	viewTask_PopUp.geometry("300x400+575+0")
 	
-	task = lb_tasks.get("active")
+	
 	#confirm in the list
 	for item in tasks:
 		if item["tName"] == task:
@@ -313,28 +334,35 @@ def viewTask():
 	lbl_taskTimeEst = tkinter.Label(viewTask_PopUp, text = selTask['tTimeEst'], bg ="white",wraplength = 200, justify = "left")
 	lbl_taskTimeEst.grid(row=4, column =1)
 	
+	"""FIXME -- Working on getting time to print out"""
+	lbl_timeStart = tkinter.Label(viewTask_PopUp, text ="Time Start:" , bg ="white",justify = "left",anchor = "w")
+	lbl_timeStart.grid(row=5, column =0)
+	lbl_taskStart = tkinter.Label(viewTask_PopUp, text = selTask['tTimeStart'].strftime("%H:%M:%S on %m/%d/%y"), bg ="white",wraplength = 200, justify = "left")
+	lbl_taskStart.grid(row=5, column =1)
+	
+	"""FIXME -- get end time to print in format"""
 	lbl_timeActual = tkinter.Label(viewTask_PopUp, text = "Time Actual: ", bg ="white",justify = "left",anchor = "w")
-	lbl_timeActual.grid(row=5, column =0)
-	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = str(int(selTask['tTimeFinish'])-int(selTask['tTimeStart'])), bg ="white",wraplength = 200, justify = "left")
-	lbl_taskTimeActual.grid(row=5, column =1)
+	lbl_timeActual.grid(row=6, column =0)
+	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = "FIXME", bg ="white",wraplength = 200, justify = "left")
+	lbl_taskTimeActual.grid(row=6, column =1)
 	
 	lbl_CostEst = tkinter.Label(viewTask_PopUp, text = "Cost Estimate: ", bg ="white",justify = "left",anchor = "w")
-	lbl_CostEst.grid(row=6, column =0)
+	lbl_CostEst.grid(row=7, column =0)
 	lbl_taskCostEst = tkinter.Label(viewTask_PopUp, text = selTask['tCostEst'], bg ="white",wraplength = 200, justify = "left")
-	lbl_taskCostEst.grid(row=6, column =1)
+	lbl_taskCostEst.grid(row=7, column =1)
 	
 	lbl_CostActual = tkinter.Label(viewTask_PopUp, text = "Actual Cost", bg ="white",justify = "left",anchor = "w")
-	lbl_CostActual.grid(row=7, column =0)
+	lbl_CostActual.grid(row=8, column =0)
 	lbl_taskCostActual = tkinter.Label(viewTask_PopUp, text = selTask['tCostAct'], bg ="white",wraplength = 200, justify = "left")
-	lbl_taskCostActual.grid(row=7, column =1)
+	lbl_taskCostActual.grid(row=8, column =1)
 	
 	lbl_Status = tkinter.Label(viewTask_PopUp, text = "Status", bg ="white",justify = "left",anchor = "w")
-	lbl_Status.grid(row=8, column =0)
+	lbl_Status.grid(row=9, column =0)
 	lbl_taskStatus = tkinter.Label(viewTask_PopUp, text = selTask['tStatus'], bg ="white",wraplength = 200, justify = "left")
-	lbl_taskStatus.grid(row=8, column =1)
+	lbl_taskStatus.grid(row=9, column =1)
 	
 	btn_Done = tkinter.Button(viewTask_PopUp, text = "Done", fg = "green", bg = "white", command =viewTask_PopUp.destroy)
-	btn_Done.grid(row=10, column = 1)
+	btn_Done.grid(row=11, column = 1)
 	
 	
 	
@@ -353,7 +381,6 @@ def filterTasks():
 	def filterItems(item):
 		#create two lists, empty and full of boolean values of the check boxes
 		itemHasList =[]
-		print("Item Has List = %s" %itemHasList)
 		checkBoxList = [chk_Priority.get(), chk_TimeEst.get(), chk_CostEst.get(),chk_Status.get()]
 		if chk_Priority.get() and item['tPriority'] == priority.get():
 			retPriority = "     "+ priority.get()
@@ -379,10 +406,9 @@ def filterTasks():
 		else:
 			retStatus = ""
 			itemHasList.append(False)
-		print("Item Has List = %s" %itemHasList)
-		print("Check Box List = %s" %checkBoxList)
+		
 		if checkBoxList == itemHasList:
-			return (True, item['tName'] + retPriority + retTimeEst +retCostEst + retStatus)
+			return (True, item['tName'] + (20 - len(item['tName']))*" " + retPriority + retTimeEst +retCostEst + retStatus)
 		else:
 			return(False, "Not in it")
 	
@@ -420,7 +446,7 @@ def filterTasks():
 		boolT = False
 		stringT =""
 		#first line of list box (headers)
-		lb_filterListbox.insert("end", "Name" + headPriority + headTimeEst + headCostEst + headStatus)
+		lb_filterListbox.insert("end", "Name"+" "*16 + headPriority + headTimeEst + headCostEst + headStatus)
 		for item in tasks:
 			boolT, stringT = filterItems(item)
 			if boolT:
