@@ -83,6 +83,10 @@ def csv_dict_reader(file_obj):
 	for item in tasks:
 		item['tTimeStart'] = convertToTime(item['tTimeStart'])
 		item['tTimeFinish'] = convertToTime(item['tTimeFinish'])
+		print("before convert: ", item['tMaterials'])
+		item['tMaterials'] = convertToList(item['tMaterials'])
+		print("after convert: ", item['tMaterials'])
+		print(type(item['tMaterials']))
 	
 	
 def update_listbox():
@@ -106,11 +110,27 @@ def update_listbox():
 def clear_listbox():
 	lb_tasks.delete(0, "end")
 
+def convertToList(item):
+	toList = item
+	print("1: ", toList)
+	toList = toList.strip('[')
+	print("2: ", toList)
+	toList = toList.strip(']')
+	print("3: ", toList)
+	toList = toList.replace("\'", "")
+	print("4: ", toList)
+	toList = toList.replace(" ", '')
+	print("4.5: ", toList)
+	toList = toList.split(',')
+	print("5: ", toList)
+	
+	return toList
+
 def add_task():
 	
 	def addTaskIn():
 		#get the task to add #tName|tDescription|tLocation|tTimeEst|tTimeStart|tTimeFinish|tCostEst|tCostAct|tPriority|tStatus
-		newTask = {"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": datetime.datetime.today(), "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get()}
+		newTask = {"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": datetime.datetime.today(), "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get(), "tMaterials": txt_addMaterials.get()}
 		
 		duplicate = False
 		
@@ -124,6 +144,7 @@ def add_task():
 				if newTask['tName'] == item['tName']:
 					confirm = messagebox.askyesno("Duplicate Found", " %s already in To-Do-List!\n Do you want to add anyway?" %newTask["tName"].capitalize())
 					if confirm:
+						newTask['tMaterials']=newTask['tMaterials'].split(',')
 						tasks.append(newTask)
 						update_listbox()
 						duplicate = True
@@ -133,6 +154,9 @@ def add_task():
 				else:
 					continue
 			if not duplicate:
+				print(newTask['tMaterials'])
+				newTask['tMaterials']=newTask['tMaterials'].split(',')
+				print(newTask['tMaterials'])
 				tasks.append(newTask)
 				update_listbox()
 				
@@ -148,6 +172,7 @@ def add_task():
 		addCostEst.set("None")
 		addPriority.set("None")
 		addStatus.set("Planned")
+		txt_addMaterials.delete(0, "end")
 		
 
 				
@@ -210,6 +235,12 @@ def add_task():
 	addStatus.set("Planned")#initial value
 	drp_addStatus = tkinter.OptionMenu(add_task_PopUp, addStatus, "Planned", "Started", "Waiting", "50%", "90%", "Completed!")
 	drp_addStatus.grid(row=6, column=1)
+	
+	#Label and entry fro materials
+	lbl_addMaterials = tkinter.Label(add_task_PopUp, text = "Materials: ", bg = "white")
+	lbl_addMaterials.grid(row=7, column = 0)
+	txt_addMaterials = tkinter.Entry(add_task_PopUp, width = 20)
+	txt_addMaterials.grid(row = 7, column = 1)
 	
 	#Add the task
 	btn_AddTask = tkinter.Button(add_task_PopUp, text = "Add this Task", fg = "green", bg = "white", command =addTaskIn)
@@ -283,7 +314,7 @@ def numOfTasks():
 
 def saveTasks():
 	#create list that contains the fild names
-	fieldnames = ["tName","tTimeStart","tLocation","tStatus","tPriority","tDescription","tTimeEst","tTimeFinish","tCostEst","tCostAct"]
+	fieldnames = ["tName","tTimeStart","tLocation","tStatus","tPriority","tDescription","tTimeEst","tTimeFinish","tCostEst","tCostAct","tMaterials"]
 	#write to file
 	with open("toDoSave.csv", "w", newline='') as out_file:
 		writer = csv.DictWriter(out_file,delimiter=',',fieldnames=fieldnames)
@@ -360,7 +391,13 @@ def viewTask():
 	lbl_Status = tkinter.Label(viewTask_PopUp, text = "Status", bg ="white",justify = "left",anchor = "w")
 	lbl_Status.grid(row=10, column =0)
 	lbl_taskStatus = tkinter.Label(viewTask_PopUp, text = selTask['tStatus'], bg ="white",wraplength = 200, justify = "left")
-	lbl_taskStatus.grid(row=9, column =1)
+	lbl_taskStatus.grid(row=10, column =1)
+	
+	"""FIXME -- fix the print out of the materials"""
+	lbl_Materials = tkinter.Label(viewTask_PopUp, text = "Materials", bg="white", justify = "left", anchor ="w")
+	lbl_Materials.grid(row=11, column = 0)
+	lbl_taskMaterials = tkinter.Label(viewTask_PopUp, text = selTask['tMaterials'], bg="white", wraplength = 200, justify = "left")
+	lbl_taskMaterials.grid(row=11, column =1)
 	
 	btn_Done = tkinter.Button(viewTask_PopUp, text = "Done", fg = "green", bg = "white", command =viewTask_PopUp.destroy)
 	btn_Done.grid(row=12, column = 1)
