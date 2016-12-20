@@ -26,6 +26,15 @@ Stats to keep track of:
 -
 
 """
+"""	HOW TO: Iterate through data
+print(tasks)
+print('\n')
+for item in tasks:
+	print('\n')
+	for value in item.keys():
+		print (item[value])
+"""
+"""FIXME  have to add a update/edit task feature where you can enter the time in"""
 
 
 import tkinter
@@ -79,14 +88,11 @@ def csv_dict_reader(file_obj):
 		tasks.append(line)
 	
 	#Iterate throught time and convert to type datetime.datetime
-	"""FIXME add for tTimeFinish -- but probably have to add a update/edit task feature where you can enter the time in"""
+	
 	for item in tasks:
 		item['tTimeStart'] = convertToTime(item['tTimeStart'])
 		item['tTimeFinish'] = convertToTime(item['tTimeFinish'])
-		print("before convert: ", item['tMaterials'])
 		item['tMaterials'] = convertToList(item['tMaterials'])
-		print("after convert: ", item['tMaterials'])
-		print(type(item['tMaterials']))
 	
 	
 def update_listbox():
@@ -112,17 +118,11 @@ def clear_listbox():
 
 def convertToList(item):
 	toList = item
-	print("1: ", toList)
 	toList = toList.strip('[')
-	print("2: ", toList)
 	toList = toList.strip(']')
-	print("3: ", toList)
 	toList = toList.replace("\'", "")
-	print("4: ", toList)
 	toList = toList.replace(" ", '')
-	print("4.5: ", toList)
 	toList = toList.split(',')
-	print("5: ", toList)
 	
 	return toList
 
@@ -154,9 +154,7 @@ def add_task():
 				else:
 					continue
 			if not duplicate:
-				print(newTask['tMaterials'])
 				newTask['tMaterials']=newTask['tMaterials'].split(',')
-				print(newTask['tMaterials'])
 				tasks.append(newTask)
 				update_listbox()
 				
@@ -596,14 +594,6 @@ def filterTasks():
 with open("toDoSave.csv") as f_obj:
 	csv_dict_reader(saveFile)
 	
-"""	HOW TO Iterate through data
-print(tasks)
-print('\n')
-for item in tasks:
-	print('\n')
-	for value in item.keys():
-		print (item[value])
-"""
 
 #PlaceHolder function to test buttons/menus/etc
 def hello():
