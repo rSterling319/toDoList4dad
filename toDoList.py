@@ -261,7 +261,10 @@ def markComplete():
 	
 	item = tasks[index]
 	item['tStatus'] = markStatus.get()
-	item['tTimeFinish'] = datetime.datetime.today()
+	if item['tStatus'] =="Completed!":
+		item['tTimeFinish'] = datetime.datetime.today()
+	if item['tStatus'] == "Started":
+		item['tTimeStart'] = datetime.datetime.today()
 	update_listbox()
 	markStatus.set("Change Status..")#initial value
 		
@@ -383,7 +386,7 @@ def viewTask():
 	
 	lbl_timeActual = tkinter.Label(viewTask_PopUp, text = "Time Actual: ", bg ="white",justify = "left",anchor = "w")
 	lbl_timeActual.grid(row=7, column =0)
-	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = selTask['tTimeFinish']-selTask['tTimeStart'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = (selTask['tTimeFinish']-selTask['tTimeStart']), bg ="white",wraplength = 200, justify = "left")
 	lbl_taskTimeActual.grid(row=7, column =1)
 	
 	lbl_CostEst = tkinter.Label(viewTask_PopUp, text = "Cost Estimate: ", bg ="white",justify = "left",anchor = "w")
