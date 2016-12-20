@@ -261,6 +261,7 @@ def markComplete():
 	
 	item = tasks[index]
 	item['tStatus'] = markStatus.get()
+	item['tTimeFinish'] = datetime.datetime.today()
 	update_listbox()
 	markStatus.set("Change Status..")#initial value
 		
@@ -323,6 +324,13 @@ def saveTasks():
 			writer.writerow(row)
 	
 	messagebox.showinfo("Saved", "Your To-Do-List has been saved!")
+
+def printMaterials(aList):
+	aString = ''
+	for item in aList:
+		aString += item + '\n'
+	
+	return aString
 
 def viewTask():
 	#function to view the selected task details
@@ -393,10 +401,9 @@ def viewTask():
 	lbl_taskStatus = tkinter.Label(viewTask_PopUp, text = selTask['tStatus'], bg ="white",wraplength = 200, justify = "left")
 	lbl_taskStatus.grid(row=10, column =1)
 	
-	"""FIXME -- fix the print out of the materials"""
 	lbl_Materials = tkinter.Label(viewTask_PopUp, text = "Materials", bg="white", justify = "left", anchor ="w")
 	lbl_Materials.grid(row=11, column = 0)
-	lbl_taskMaterials = tkinter.Label(viewTask_PopUp, text = selTask['tMaterials'], bg="white", wraplength = 200, justify = "left")
+	lbl_taskMaterials = tkinter.Label(viewTask_PopUp, text = printMaterials(selTask['tMaterials']), bg="white", wraplength = 200, justify = "left", fg ="purple")
 	lbl_taskMaterials.grid(row=11, column =1)
 	
 	btn_Done = tkinter.Button(viewTask_PopUp, text = "Done", fg = "green", bg = "white", command =viewTask_PopUp.destroy)
