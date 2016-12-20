@@ -335,6 +335,16 @@ def printMaterials(aList):
 	
 	return aString
 
+def convertTimeDelta(deltaTime):
+	print(deltaTime)
+	years = int(deltaTime.days/365)
+	days = deltaTime.days%365
+	hours = int(deltaTime.seconds/(60**2))
+	minutes=(int(deltaTime.seconds/60))%60
+	seconds= deltaTime.seconds%60
+	
+	return "%s years %s days %s:%s h:m" %(years, days, hours, minutes)
+	
 def viewTask():
 	#function to view the selected task details
 	task = lb_tasks.get("active")		
@@ -386,7 +396,7 @@ def viewTask():
 	
 	lbl_timeActual = tkinter.Label(viewTask_PopUp, text = "Time Actual: ", bg ="white",justify = "left",anchor = "w")
 	lbl_timeActual.grid(row=7, column =0)
-	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = (selTask['tTimeFinish']-selTask['tTimeStart']), bg ="white",wraplength = 200, justify = "left")
+	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = convertTimeDelta((selTask['tTimeFinish']-selTask['tTimeStart'])), bg ="white",wraplength = 200, justify = "left")
 	lbl_taskTimeActual.grid(row=7, column =1)
 	
 	lbl_CostEst = tkinter.Label(viewTask_PopUp, text = "Cost Estimate: ", bg ="white",justify = "left",anchor = "w")
