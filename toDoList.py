@@ -59,7 +59,7 @@ saveFile = open("toDoSave.csv",'r')
 #functions
 def convertToTime(aString):
 	if aString == '0':
-		return 0
+		return datetime.datetime(1,1,1,1,1,1)
 	else:
 		year= int(aString[0:4])
 		month= int(aString[5:7])
@@ -79,13 +79,11 @@ def csv_dict_reader(file_obj):
 		tasks.append(line)
 	
 	#Iterate throught time and convert to type datetime.datetime
-	"""FIXME add for tTimeFinish"""
+	"""FIXME add for tTimeFinish -- but probably have to add a update/edit task feature where you can enter the time in"""
 	for item in tasks:
 		item['tTimeStart'] = convertToTime(item['tTimeStart'])
+		item['tTimeFinish'] = convertToTime(item['tTimeFinish'])
 	
-		
-	"""FIXME - need to convert the time read in to date time
-	"""
 	
 def update_listbox():
 	#clear listbox
@@ -334,35 +332,38 @@ def viewTask():
 	lbl_taskTimeEst = tkinter.Label(viewTask_PopUp, text = selTask['tTimeEst'], bg ="white",wraplength = 200, justify = "left")
 	lbl_taskTimeEst.grid(row=4, column =1)
 	
-	"""FIXME -- Working on getting time to print out"""
 	lbl_timeStart = tkinter.Label(viewTask_PopUp, text ="Time Start:" , bg ="white",justify = "left",anchor = "w")
 	lbl_timeStart.grid(row=5, column =0)
-	lbl_taskStart = tkinter.Label(viewTask_PopUp, text = selTask['tTimeStart'].strftime("%H:%M:%S on %m/%d/%y"), bg ="white",wraplength = 200, justify = "left")
+	lbl_taskStart = tkinter.Label(viewTask_PopUp, text = selTask['tTimeStart'].strftime("%H:%M on %m/%d/%y"), bg ="white",wraplength = 200, justify = "left")
 	lbl_taskStart.grid(row=5, column =1)
 	
-	"""FIXME -- get end time to print in format"""
+	lbl_timeStart = tkinter.Label(viewTask_PopUp, text ="Time Finish:" , bg ="white",justify = "left",anchor = "w")
+	lbl_timeStart.grid(row=6, column =0)
+	lbl_taskStart = tkinter.Label(viewTask_PopUp, text = selTask['tTimeFinish'].strftime("%H:%M on %m/%d/%y"), bg ="white",wraplength = 200, justify = "left")
+	lbl_taskStart.grid(row=6, column =1)
+	
 	lbl_timeActual = tkinter.Label(viewTask_PopUp, text = "Time Actual: ", bg ="white",justify = "left",anchor = "w")
-	lbl_timeActual.grid(row=6, column =0)
-	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = "FIXME", bg ="white",wraplength = 200, justify = "left")
-	lbl_taskTimeActual.grid(row=6, column =1)
+	lbl_timeActual.grid(row=7, column =0)
+	lbl_taskTimeActual = tkinter.Label(viewTask_PopUp, text = selTask['tTimeFinish']-selTask['tTimeStart'], bg ="white",wraplength = 200, justify = "left")
+	lbl_taskTimeActual.grid(row=7, column =1)
 	
 	lbl_CostEst = tkinter.Label(viewTask_PopUp, text = "Cost Estimate: ", bg ="white",justify = "left",anchor = "w")
-	lbl_CostEst.grid(row=7, column =0)
+	lbl_CostEst.grid(row=8, column =0)
 	lbl_taskCostEst = tkinter.Label(viewTask_PopUp, text = selTask['tCostEst'], bg ="white",wraplength = 200, justify = "left")
-	lbl_taskCostEst.grid(row=7, column =1)
+	lbl_taskCostEst.grid(row=8, column =1)
 	
 	lbl_CostActual = tkinter.Label(viewTask_PopUp, text = "Actual Cost", bg ="white",justify = "left",anchor = "w")
-	lbl_CostActual.grid(row=8, column =0)
+	lbl_CostActual.grid(row=9, column =0)
 	lbl_taskCostActual = tkinter.Label(viewTask_PopUp, text = selTask['tCostAct'], bg ="white",wraplength = 200, justify = "left")
-	lbl_taskCostActual.grid(row=8, column =1)
+	lbl_taskCostActual.grid(row=9, column =1)
 	
 	lbl_Status = tkinter.Label(viewTask_PopUp, text = "Status", bg ="white",justify = "left",anchor = "w")
-	lbl_Status.grid(row=9, column =0)
+	lbl_Status.grid(row=10, column =0)
 	lbl_taskStatus = tkinter.Label(viewTask_PopUp, text = selTask['tStatus'], bg ="white",wraplength = 200, justify = "left")
 	lbl_taskStatus.grid(row=9, column =1)
 	
 	btn_Done = tkinter.Button(viewTask_PopUp, text = "Done", fg = "green", bg = "white", command =viewTask_PopUp.destroy)
-	btn_Done.grid(row=11, column = 1)
+	btn_Done.grid(row=12, column = 1)
 	
 	
 	
