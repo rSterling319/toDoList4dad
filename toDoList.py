@@ -130,7 +130,7 @@ def add_task():
 	
 	def addTaskIn():
 		#get the task to add #tName|tDescription|tLocation|tTimeEst|tTimeStart|tTimeFinish|tCostEst|tCostAct|tPriority|tStatus
-		newTask = {"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": datetime.datetime.today(), "tTimeFinish": 0,"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get(), "tMaterials": txt_addMaterials.get()}
+		newTask = {"tName":txt_addTask.get().capitalize(),"tDescription":txt_addDesc.get(),"tLocation": txt_addLocation.get(), "tTimeEst":addTimeEst.get(), "tTimeStart": datetime.datetime.today(), "tTimeFinish": datetime.datetime(1,1,1,1,1,1),"tCostEst":addCostEst.get(),"tCostAct":0,"tPriority":addPriority.get(),"tStatus":addStatus.get(), "tMaterials": txt_addMaterials.get()}
 		
 		duplicate = False
 		
@@ -436,35 +436,42 @@ def filterTasks():
 	
 	def filterItems(item):
 		#create two lists, empty and full of boolean values of the check boxes
+		name = item['tName'] +(20- len(item['tName']))*" "
 		itemHasList =[]
+		
+		"""FIXME -- want to figure out how to add the spaces if there is something before, but not if there isn't
+					was thinking of mulitplying by the lenght of the previous divided by the length of the previous but  that
+					would result in division by zero.
+					-could I multiply by some version to get the desired spaces-
+		"""
 		checkBoxList = [chk_Priority.get(), chk_TimeEst.get(), chk_CostEst.get(),chk_Status.get()]
 		if chk_Priority.get() and item['tPriority'] == priority.get():
-			retPriority = "     "+ priority.get()
+			retPriority = priority.get()
 			itemHasList.append(chk_Priority.get())
 		else:
 			retPriority =""
 			itemHasList.append(False)
 		if chk_TimeEst.get() and item['tTimeEst'] == timeEst.get():
-			retTimeEst = "     "+timeEst.get()
+			retTimeEst = (10-len(retPriority))*" " + timeEst.get()
 			itemHasList.append(chk_TimeEst.get())
 		else:
 			retTimeEst = ""
 			itemHasList.append(False)
 		if chk_CostEst.get() and item['tCostEst'] == costEst.get():
-			retCostEst = "     " +costEst.get()
+			retCostEst = costEst.get()
 			itemHasList.append(chk_CostEst.get())
 		else:
 			retCostEst = ""
 			itemHasList.append(False)
 		if chk_Status.get() and item['tStatus'] == status.get():
-			retStatus = "     "+status.get()
+			retStatus = status.get()
 			itemHasList.append(chk_Status.get())
 		else:
 			retStatus = ""
 			itemHasList.append(False)
 		
 		if checkBoxList == itemHasList:
-			return (True, item['tName'] + (20 - len(item['tName']))*" " + retPriority + retTimeEst +retCostEst + retStatus)
+			return (True, name + retPriority +  retTimeEst  +retCostEst + retStatus)
 		else:
 			return(False, "Not in it")
 	
@@ -473,13 +480,13 @@ def filterTasks():
 		#a little boolean stuff to add to the titles
 		if chk_Priority.get():
 			printPriority = "\nPriority = " + priority.get()
-			headPriority = "\tPriority"
+			headPriority = "Priority"
 		else:
 			printPriority = ""
 			headPriority = ""
 		if chk_TimeEst.get():
 			printTimeEst = "\nTime Estimate = " + timeEst.get()
-			headTimeEst = "\tTimeEst"
+			headTimeEst = (10 - len(headPriority))*" " + "TimeEst"
 		else:
 			printTimeEst =""
 			headTimeEst =""
@@ -495,7 +502,7 @@ def filterTasks():
 		else:
 			printStatus = ""
 			headStatus =""
-			
+	
 		lbl_filterResults["text"] = "Filtered Results by:" + printPriority + printTimeEst + printCostEst + printStatus
 		
 		#populate the list box
@@ -503,6 +510,11 @@ def filterTasks():
 		stringT =""
 		#first line of list box (headers)
 		lb_filterListbox.insert("end", "Name"+" "*16 + headPriority + headTimeEst + headCostEst + headStatus)
+		lb_filterListbox.itemconfig(0, {"fg" :"purple"})
+		length = len("Name"+" "*16 + headPriority + headTimeEst + headCostEst + headStatus)
+		lb_filterListbox.insert("end", "="*length)
+		
+		"""FIXME --fix formatting of the return value so that stuff aligns properly"""
 		for item in tasks:
 			boolT, stringT = filterItems(item)
 			if boolT:
@@ -578,7 +590,7 @@ def filterTasks():
 	
 	#listbox
 	lb_filterListbox = tkinter.Listbox(viewFilter_PopUp)
-	lb_filterListbox.config(width = 40, height = 20)
+	lb_filterListbox.config(width = 40, height = 20, font = "Courier")
 	lb_filterListbox.grid(row= 2, column = 3, rowspan = 7, columnspan = 4)
 	
 	#ok button
