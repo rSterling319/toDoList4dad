@@ -65,6 +65,7 @@ from operator import itemgetter
 #for date and time function
 import datetime
 import math
+from difflib import SequenceMatcher
 
 #Create The GUI Elements
 #create root window
@@ -617,18 +618,30 @@ def filterTasks():
 	btn_closeBtn = tkinter.Button(viewFilter_PopUp, text = "Close", command = viewFilter_PopUp.destroy)
 	btn_closeBtn.grid(row = 15, column = 3)
 
+def match(a, b):
+	return SequenceMatcher(None, a, b).ratio()
 
 '''FIXME -- continue working on the search function'''
 def search():
-	searchFor = txt_searchTask.get()
+	found = False
+	searchFor = txt_searchTask.get().capitalize()
 	for item in tasks:
 		if item['tName'] == searchFor:
 			index = tasks.index(item)
-			lb_tasks.select_set(index)
-			lb_tasks.activate(index)
+			tasks[0], tasks[index] = tasks[index], tasks[0]
+			update_listbox()
+			lb_tasks.select_set(0)
+			lb_tasks.activate(0)
 			viewTask()
-			txt_searchTask.delete(0, 'end')
-
+			found = True
+		if match(searchFor, item['tName']) > .75:
+			print(item['tName'], " %s%% match" %int(match(searchFor, item['tName'])*100))
+		perc = 0
+	
+	if not found:
+		messagebox.showwarning("Not found!", "%s not found!" %searchFor)
+	txt_searchTask.delete(0, 'end')
+	"""have a else with message box saying doesn't exsist"""
 
 #open the file and read into list tasks
 with open("toDoSave.csv") as f_obj:
