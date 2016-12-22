@@ -49,6 +49,8 @@ for item in tasks:
 """
 """FIXME's  
 	-previously updated labels -- label no longer exists x2
+	-finish search bar!
+	--continue working on the search function
 		
 """
 
@@ -75,7 +77,7 @@ root.configure(bg="white")
 root.title("To-Do-List")
 
 #set the window size
-root.geometry("300x325+250+50")
+root.geometry("300x350+250+50")
 
 #create empty list
 tasks = []
@@ -616,6 +618,18 @@ def filterTasks():
 	btn_closeBtn.grid(row = 15, column = 3)
 
 
+'''FIXME -- continue working on the search function'''
+def search():
+	searchFor = txt_searchTask.get()
+	for item in tasks:
+		if item['tName'] == searchFor:
+			index = tasks.index(item)
+			lb_tasks.select_set(index)
+			lb_tasks.activate(index)
+			viewTask()
+			txt_searchTask.delete(0, 'end')
+
+
 #open the file and read into list tasks
 with open("toDoSave.csv") as f_obj:
 	csv_dict_reader(saveFile)
@@ -695,13 +709,20 @@ btn_numOfTasks.grid(row=9, column =0)
 btn_viewTask = tkinter.Button(root, text = "View Task Details", fg = "green", bg = "white", command = viewTask)
 btn_viewTask.grid(row=10, column = 0)
 
+"""FIXME finish search bar!"""
+
+txt_searchTask = tkinter.Entry(root, width = 20)
+txt_searchTask.grid(row = 10, column = 1)
+btn_searchTask = tkinter.Button(root, text = "Search", fg = "green", bg = "white", command = search)
+btn_searchTask.grid(row=11, column =1)
+
 btn_exit = tkinter.Button(root, text = "Exit", fg = "green", bg = "white", command = exit)
 btn_exit.grid(row=12, column =0)
 
 btn_save = tkinter.Button(root, text = "Save", fg = "green", bg = "white", command = saveTasks)
 btn_save.grid(row=12, column = 1)
 
-lb_tasks =  tkinter.Listbox(root)
+lb_tasks =  tkinter.Listbox(root, activestyle ='dotbox')
 lb_tasks.grid(row=3, column =1, rowspan = 7)
 
 update_listbox()
