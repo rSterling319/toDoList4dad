@@ -46,6 +46,7 @@ import csv
 from operator import itemgetter
 #for date and time function
 import datetime
+import math
 
 #Create The GUI Elements
 #create root window
@@ -334,7 +335,6 @@ def printMaterials(aList):
 	return aString
 
 def convertTimeDelta(deltaTime):
-	print(deltaTime)
 	years = int(deltaTime.days/365)
 	days = deltaTime.days%365
 	hours = int(deltaTime.seconds/(60**2))
@@ -439,39 +439,38 @@ def filterTasks():
 		name = item['tName'] +(20- len(item['tName']))*" "
 		itemHasList =[]
 		
-		"""FIXME -- want to figure out how to add the spaces if there is something before, but not if there isn't
-					was thinking of mulitplying by the lenght of the previous divided by the length of the previous but  that
-					would result in division by zero.
-					-could I multiply by some version to get the desired spaces-
-		"""
 		checkBoxList = [chk_Priority.get(), chk_TimeEst.get(), chk_CostEst.get(),chk_Status.get()]
 		if chk_Priority.get() and item['tPriority'] == priority.get():
 			retPriority = priority.get()
 			itemHasList.append(chk_Priority.get())
+			retPriority = retPriority+(math.ceil(len(retPriority)/(len(retPriority)+1))*(10-len(retPriority)))*" " 
 		else:
 			retPriority =""
 			itemHasList.append(False)
 		if chk_TimeEst.get() and item['tTimeEst'] == timeEst.get():
-			retTimeEst = (10-len(retPriority))*" " + timeEst.get()
+			retTimeEst = timeEst.get()
 			itemHasList.append(chk_TimeEst.get())
+			retTimeEst = retTimeEst+(math.ceil(len(retTimeEst)/(len(retTimeEst)+1))*(10-len(retTimeEst)))*" "
 		else:
 			retTimeEst = ""
 			itemHasList.append(False)
 		if chk_CostEst.get() and item['tCostEst'] == costEst.get():
 			retCostEst = costEst.get()
 			itemHasList.append(chk_CostEst.get())
+			retCostEst = retCostEst+(math.ceil(len(retCostEst)/(len(retCostEst)+1))*(10-len(retCostEst)))*" "
 		else:
 			retCostEst = ""
 			itemHasList.append(False)
 		if chk_Status.get() and item['tStatus'] == status.get():
 			retStatus = status.get()
 			itemHasList.append(chk_Status.get())
+			retStatus = retStatus+(math.ceil(len(retStatus)/(len(retStatus)+1))*(10-len(retStatus)))*" "
 		else:
 			retStatus = ""
 			itemHasList.append(False)
 		
 		if checkBoxList == itemHasList:
-			return (True, name + retPriority +  retTimeEst  +retCostEst + retStatus)
+			return (True, name + retPriority +  retTimeEst  + retStatus +retCostEst )
 		else:
 			return(False, "Not in it")
 	
@@ -480,38 +479,38 @@ def filterTasks():
 		#a little boolean stuff to add to the titles
 		if chk_Priority.get():
 			printPriority = "\nPriority = " + priority.get()
-			headPriority = "Priority"
+			headPriority = "Priority  "
 		else:
 			printPriority = ""
 			headPriority = ""
 		if chk_TimeEst.get():
 			printTimeEst = "\nTime Estimate = " + timeEst.get()
-			headTimeEst = (10 - len(headPriority))*" " + "TimeEst"
+			headTimeEst = "TimeEst   "
 		else:
 			printTimeEst =""
 			headTimeEst =""
 		if chk_CostEst.get():
 			printCostEst = "\nCost Estimate = " + costEst.get()
-			headCostEst = "\tCostEst"
+			headCostEst = "CostEst   "
 		else:
 			printCostEst = ""
 			headCostEst =""
 		if chk_Status.get():
 			printStatus = "\nStatus = " + status.get()
-			headStatus = "\tStatus"
+			headStatus = "Status    "
 		else:
 			printStatus = ""
 			headStatus =""
 	
-		lbl_filterResults["text"] = "Filtered Results by:" + printPriority + printTimeEst + printCostEst + printStatus
+		lbl_filterResults["text"] = "Filtered Results by:" + printPriority + printTimeEst  + printStatus + printCostEst
 		
 		#populate the list box
 		boolT = False
 		stringT =""
 		#first line of list box (headers)
-		lb_filterListbox.insert("end", "Name"+" "*16 + headPriority + headTimeEst + headCostEst + headStatus)
+		lb_filterListbox.insert("end", "Name"+" "*16 + headPriority + headTimeEst  + headStatus+ headCostEst)
 		lb_filterListbox.itemconfig(0, {"fg" :"purple"})
-		length = len("Name"+" "*16 + headPriority + headTimeEst + headCostEst + headStatus)
+		length = len("Name"+" "*16 + headPriority + headTimeEst  + headStatus+ headCostEst)
 		lb_filterListbox.insert("end", "="*length)
 		
 		"""FIXME --fix formatting of the return value so that stuff aligns properly"""
@@ -572,21 +571,21 @@ def filterTasks():
 	costEst = tkinter.StringVar(viewFilter_PopUp)
 	costEst.set("Cost Estimate..")
 	drp_CostEst = tkinter.OptionMenu(viewFilter_PopUp, costEst, "None ($0)", "Low  (<$150)", "Med  ($150-$500)", "High  ($500-$1500)", "Very High  (>$1500)")
-	drp_CostEst.grid(row=3, column = 1)
+	drp_CostEst.grid(row=4, column = 1)
 	#cost Est check box
 	chk_CostEst=tkinter.BooleanVar()
 	chk_CostEstBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_CostEst, onvalue=True, offvalue=False)
-	chk_CostEstBox.grid(row=3, column = 0)
+	chk_CostEstBox.grid(row=4, column = 0)
 	
 	#status drop down
 	status = tkinter.StringVar(viewFilter_PopUp)
 	status.set("Status..")
 	drp_Status = tkinter.OptionMenu(viewFilter_PopUp, status, "Planned", "Started", "Waiting", "50%", "90%", "Completed!")
-	drp_Status.grid(row=4,column=1)
+	drp_Status.grid(row=3,column=1)
 	#status check box
 	chk_Status=tkinter.BooleanVar()
 	chk_StatusBox = tkinter.Checkbutton(viewFilter_PopUp, variable = chk_Status, onvalue=True, offvalue=False)
-	chk_StatusBox.grid(row=4, column = 0)
+	chk_StatusBox.grid(row=3, column = 0)
 	
 	#listbox
 	lb_filterListbox = tkinter.Listbox(viewFilter_PopUp)
