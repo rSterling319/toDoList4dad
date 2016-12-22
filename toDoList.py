@@ -25,6 +25,19 @@ Stats to keep track of:
 -cost
 -
 
+ADD:
+have a materials add, be able to select a multiple to-do items and to a materials list and print/write to text file
+	-get active from main window but adds to a listbox on a separate window
+	-separate by task name
+	-flag a duplicate material just have(duplicate) print out next to it
+print a task details page
+print a filtered list
+possibly a print all tasks sorted by a certain paramerter
+Search feature
+	-do a percent match.. that way if somethin is mispelled/capitalized it might still show up
+have to add a update/edit task feature where you can enter the time in and other features
+	- i think i can achieve this by just populating the add task with the current selected item
+
 """
 """	HOW TO: Iterate through data
 print(tasks)
@@ -34,7 +47,10 @@ for item in tasks:
 	for value in item.keys():
 		print (item[value])
 """
-"""FIXME  have to add a update/edit task feature where you can enter the time in"""
+"""FIXME's  
+	-previously updated labels -- label no longer exists x2
+		
+"""
 
 
 import tkinter
@@ -122,7 +138,7 @@ def convertToList(item):
 	toList = toList.strip('[')
 	toList = toList.strip(']')
 	toList = toList.replace("\'", "")
-	toList = toList.replace(" ", '')
+	#toList = toList.replace(" ", '')
 	toList = toList.split(',')
 	
 	return toList
@@ -513,7 +529,6 @@ def filterTasks():
 		length = len("Name"+" "*16 + headPriority + headTimeEst  + headStatus+ headCostEst)
 		lb_filterListbox.insert("end", "="*length)
 		
-		"""FIXME --fix formatting of the return value so that stuff aligns properly"""
 		for item in tasks:
 			boolT, stringT = filterItems(item)
 			if boolT:
