@@ -78,7 +78,7 @@ root.configure(bg="white")
 root.title("To-Do-List")
 
 #set the window size
-root.geometry("300x350+250+50")
+root.geometry("325x350+250+50")
 
 #create empty list
 tasks = []
@@ -143,7 +143,9 @@ def convertToList(item):
 	toList = toList.replace("\'", "")
 	#toList = toList.replace(" ", '')
 	toList = toList.split(',')
-	
+	for i in range(0, len(toList)):
+		toList[i] = toList[i].strip()
+		
 	return toList
 
 def add_task():
@@ -164,7 +166,7 @@ def add_task():
 				if newTask['tName'] == item['tName']:
 					confirm = messagebox.askyesno("Duplicate Found", " %s already in To-Do-List!\n Do you want to add anyway?" %newTask["tName"].capitalize())
 					if confirm:
-						newTask['tMaterials']=newTask['tMaterials'].split(',')
+						newTask['tMaterials']=convertToList(newTask['tMaterials'])
 						tasks.append(newTask)
 						update_listbox()
 						duplicate = True
@@ -174,7 +176,7 @@ def add_task():
 				else:
 					continue
 			if not duplicate:
-				newTask['tMaterials']=newTask['tMaterials'].split(',')
+				newTask['tMaterials']=convertToList(newTask['tMaterials'])
 				tasks.append(newTask)
 				update_listbox()
 				
@@ -636,21 +638,65 @@ def search():
 			found = True
 		if match(searchFor, item['tName']) > .75:
 			print(item['tName'], " %s%% match" %int(match(searchFor, item['tName'])*100))
-		perc = 0
 	
 	if not found:
 		messagebox.showwarning("Not found!", "%s not found!" %searchFor)
 	txt_searchTask.delete(0, 'end')
 	"""have a else with message box saying doesn't exsist"""
 
-#open the file and read into list tasks
-with open("toDoSave.csv") as f_obj:
-	csv_dict_reader(saveFile)
+def materialsList():
 	
+	
+	#function to add materials in from root
+	def addMatIn():
+		#get active task
+		task = lb_tasks.get("active")
+		for item in tasks:
+			if item['tName'] == task:
+				selTask = item
+							
+		lb_materialListbox.insert('end', "---" + selTask['tName'] +"---")
+		for mat in selTask['tMaterials']:
+			lb_materialListbox.insert('end', mat)
+	
+	#function to print the materials list
+	def printLB():
+		matOut = open('materialsPrint.txt','w')
+		matOut.write("Materials List\n")
+		matOut.write(datetime.datetime.today().strftime("%m/%d/%y")+'\n')
+		matOut.write("="*50+'\n')
+		for item in lb_materialListbox.get(0, 'end'):
+			matOut.write(item+'\n')
+		
+		matOut.close()
+			
+			
+	#Create pop up
+	materialsList_PopUp = tkinter.Toplevel()
+	materialsList_PopUp.title("Materials List")
+	materialsList_PopUp.geometry("400x425+575+0")
+	
+	#create list box
+	lb_materialListbox = tkinter.Listbox(materialsList_PopUp)
+	lb_materialListbox.config(width = 40, height = 20, font = "Courier")
+	lb_materialListbox.grid(row= 1, column = 1, rowspan = 7, columnspan = 4)
+	
+	#add materials in button
+	btn_addMatIn = tkinter.Button(materialsList_PopUp, text = "Add Materials in", fg="green", bg = "white", command = addMatIn)
+	btn_addMatIn.grid(row = 1, column =0)
+	
+	#print button
+	btn_printMat = tkinter.Button(materialsList_PopUp, text = "Print this List", fg ="green", bg = "white", command = printLB)
+	btn_printMat.grid(row = 8, column = 1)
 
 #PlaceHolder function to test buttons/menus/etc
 def hello():
 	print("hello")
+
+#open the file and read into list tasks
+with open("toDoSave.csv") as f_obj:
+	csv_dict_reader(saveFile)
+	
 	
 #create menuBar at top of root
 menubar = tkinter.Menu(root)
@@ -728,6 +774,9 @@ txt_searchTask = tkinter.Entry(root, width = 20)
 txt_searchTask.grid(row = 10, column = 1)
 btn_searchTask = tkinter.Button(root, text = "Search", fg = "green", bg = "white", command = search)
 btn_searchTask.grid(row=11, column =1)
+
+btn_materialsList = tkinter.Button(root, text = "Create Materials List", fg ='green', bg = "white", command = materialsList)
+btn_materialsList.grid(row = 11, column = 0)
 
 btn_exit = tkinter.Button(root, text = "Exit", fg = "green", bg = "white", command = exit)
 btn_exit.grid(row=12, column =0)
