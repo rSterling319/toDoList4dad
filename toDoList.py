@@ -66,6 +66,8 @@ from operator import itemgetter
 import datetime
 import math
 from difflib import SequenceMatcher
+#use call to execute commandline arguments
+from subprocess import call
 
 #Create The GUI Elements
 #create root window
@@ -324,9 +326,11 @@ def sortDsc():
 
 def chooRand():
 	#choose a random task
-	task = random.choice(tasks)
-	#update display label
-	lbl_display["text"]=task["tName"]
+	task = random.randint(0,len(tasks))
+	#activate that index
+	lb_tasks.activate(task)
+	viewTask()
+	#lbl_display["text"]=task["tName"]
 	
 def numOfTasks():
 	#get number of tasks
@@ -669,6 +673,8 @@ def materialsList():
 			matOut.write(item+'\n')
 		
 		matOut.close()
+		#executes commandline operation
+		call(["open","materialsPrint.txt"]) # command line-> lpr fileYouWantToPrint.txt (prints direct to printer)
 			
 			
 	#Create pop up
@@ -688,6 +694,10 @@ def materialsList():
 	#print button
 	btn_printMat = tkinter.Button(materialsList_PopUp, text = "Print this List", fg ="green", bg = "white", command = printLB)
 	btn_printMat.grid(row = 8, column = 1)
+	
+	#close button
+	btn_closeMat = tkinter.Button(materialsList_PopUp, text = "Close", fg = "green", bg = "white", command= materialsList_PopUp.destroy)
+	btn_closeMat.grid(row=9, column =1)
 
 #PlaceHolder function to test buttons/menus/etc
 def hello():
@@ -757,7 +767,6 @@ btn_sortDsc.grid(row=6, column =0)
 btn_filter = tkinter.Button(root, text = "Filter Tasks", fg = "green", bg = "white", command = filterTasks)
 btn_filter.grid(row=7, column =0)
 
-"""FIXME -- previously updated label -- label no longer exists"""
 btn_chooRand = tkinter.Button(root, text = "Choose Random", fg = "green", bg = "white", command = chooRand)
 btn_chooRand.grid(row=8, column =0)
 
