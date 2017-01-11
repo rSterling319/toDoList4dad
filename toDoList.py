@@ -48,9 +48,10 @@ for item in tasks:
 		print (item[value])
 """
 """FIXME's  
-	-previously updated labels -- label no longer exists x2
 	-finish search bar!
 	--continue working on the search function
+	-fishich edit function
+		- fixing time entry (start/finish)
 		
 """
 
@@ -65,6 +66,7 @@ from operator import itemgetter
 #for date and time function
 import datetime
 import math
+#for the search to get percent match
 from difflib import SequenceMatcher
 #use call to execute commandline arguments
 from subprocess import call
@@ -80,7 +82,7 @@ root.configure(bg="white")
 root.title("To-Do-List")
 
 #set the window size
-root.geometry("325x350+250+50")
+root.geometry("325x375+250+50")
 
 #create empty list
 tasks = []
@@ -338,7 +340,7 @@ def numOfTasks():
 	#create and format message to dispay
 	msg = "Number of Tasks: %s" %number_of_tasks
 	#display message
-	lbl_display["text"] = msg
+	messagebox.showinfo("Number of Tasks", msg)
 
 def saveTasks():
 	#create list that contains the fild names
@@ -461,7 +463,7 @@ def filterTasks():
 	
 	def filterItems(item):
 		#create two lists, empty and full of boolean values of the check boxes
-		name = item['tName'] +(20- len(item['tName']))*" "
+		name = item['tName'] +(30- len(item['tName']))*" "
 		itemHasList =[]
 		
 		checkBoxList = [chk_Priority.get(), chk_TimeEst.get(), chk_CostEst.get(),chk_Status.get()]
@@ -533,10 +535,13 @@ def filterTasks():
 		boolT = False
 		stringT =""
 		#first line of list box (headers)
-		lb_filterListbox.insert("end", "Name"+" "*16 + headPriority + headTimeEst  + headStatus+ headCostEst)
+		lb_filterListbox.insert("end", "Name"+" "*26 + headPriority + headTimeEst  + headStatus+ headCostEst)
 		lb_filterListbox.itemconfig(0, {"fg" :"purple"})
-		length = len("Name"+" "*16 + headPriority + headTimeEst  + headStatus+ headCostEst)
+		length = len("Name"+" "*26 + headPriority + headTimeEst  + headStatus+ headCostEst)
 		lb_filterListbox.insert("end", "="*length)
+		lb_filterListbox.config(width = length, height = 20, font = "Courier")
+		print(length)
+		viewFilter_PopUp.geometry(str(int(600 + length*2.5))+"x600+575+0")
 		
 		for item in tasks:
 			boolT, stringT = filterItems(item)
@@ -634,7 +639,7 @@ def search():
 	for item in tasks:
 		if item['tName'] == searchFor:
 			index = tasks.index(item)
-			tasks[0], tasks[index] = tasks[index], tasks[0]
+			tasks[0], tasks[index] = tasks[index], tasks[0] #move to top (switch locatios in list)
 			update_listbox()
 			lb_tasks.select_set(0)
 			lb_tasks.activate(0)
@@ -698,6 +703,108 @@ def materialsList():
 	#close button
 	btn_closeMat = tkinter.Button(materialsList_PopUp, text = "Close", fg = "green", bg = "white", command= materialsList_PopUp.destroy)
 	btn_closeMat.grid(row=9, column =1)
+	
+def editTask():
+	"""FIXME - finish the edit task. need to actuall implement the editing(the changes)"""
+	#function to edit the selected task details
+	task = lb_tasks.get("active")
+	
+	#create pop up window to edit details of selected task
+	editTask_PopUp = tkinter.Toplevel()
+	editTask_PopUp.title(task) #displays task name as the window name
+	editTask_PopUp.geometry("300x400+575+0")
+	
+	for item in tasks:
+		if task == item['tName']:
+			task = item
+			
+	#Label and text box for add task
+	lbl_addTask = tkinter.Label(editTask_PopUp, text ="Task: ", bg = "white")
+	lbl_addTask.grid(row=0, column =0)
+	txt_addTask = tkinter.Entry(editTask_PopUp, width = 20)
+	txt_addTask.insert('end', task['tName'])
+	txt_addTask.grid(row=0, column = 1)
+	
+	#Label and dropDown box for priority
+	lbl_addPriority = tkinter.Label(editTask_PopUp, text= "Priority: ", bg ="white")
+	lbl_addPriority.grid(row =1 , column =0 )
+	addPriority = tkinter.StringVar(editTask_PopUp)
+	addPriority.set(task['tPriority']) #initial value
+	drp_addPriority = tkinter.OptionMenu(editTask_PopUp, addPriority, "None", "Low", "Med", "High")
+	drp_addPriority.grid(row =1, column = 1)
+	
+	#label and text box for add description
+	lbl_addDesc = tkinter.Label(editTask_PopUp, text= "Description: ", bg ="white")
+	lbl_addDesc.grid(row = 2, column = 0)
+	txt_addDesc = tkinter.Entry(editTask_PopUp, width = 20)
+	txt_addDesc.insert('end', task['tDescription'])
+	txt_addDesc.grid(row =2, column = 1)
+	
+	#label and text box for add location
+	lbl_addLocation = tkinter.Label(editTask_PopUp, text= "Location: ", bg ="white")
+	lbl_addLocation.grid(row = 3, column = 0)
+	txt_addLocation = tkinter.Entry(editTask_PopUp, width = 20)
+	txt_addLocation.insert('end',task['tLocation'])
+	txt_addLocation.grid(row =3, column = 1)
+
+	#label and DropDown box for add time estimate
+	lbl_addTimeEst = tkinter.Label(editTask_PopUp, text= "Time Estimate: ", bg ="white")
+	lbl_addTimeEst.grid(row =4 , column =0 )
+	addTimeEst = tkinter.StringVar(editTask_PopUp)
+	addTimeEst.set(task['tTimeEst']) #initial value
+	drp_addTimeEst = tkinter.OptionMenu(editTask_PopUp, addTimeEst, "None", "Short", "Med", "Long")
+	drp_addTimeEst.grid(row =4, column = 1)
+	
+	"""FIXME fix the edit time entry"""
+	lbl_timeStart = tkinter.Label(editTask_PopUp, text ="Time Start:" , bg ="white",justify = "left",anchor = "w")
+	lbl_timeStart.grid(row=5, column =0)
+	lbl_taskStart = tkinter.Label(editTask_PopUp, text = "something Here", bg ="white",wraplength = 200, justify = "left")
+	lbl_taskStart.grid(row=5, column =1)
+	
+	"""FIXME fix the edit time entry"""
+	lbl_timeFinish = tkinter.Label(editTask_PopUp, text ="Time Finish:" , bg ="white",justify = "left",anchor = "w")
+	lbl_timeFinish.grid(row=6, column =0)
+	lbl_taskFinish = tkinter.Label(editTask_PopUp, text = "Something HERE", bg ="white",wraplength = 200, justify = "left")
+	lbl_taskFinish.grid(row=6, column =1)
+
+	
+	#label and DropDown box for add cost estimate
+	lbl_addCostEst = tkinter.Label(editTask_PopUp, text= "Cost Estimate: ", bg ="white")
+	lbl_addCostEst.grid(row = 7, column = 0)
+	addCostEst = tkinter.StringVar(editTask_PopUp)
+	addCostEst.set(task['tCostEst']) #initialvalue
+	drp_addCostEst = tkinter.OptionMenu(editTask_PopUp, addCostEst,"None ($0)", "Low  (<$150)", "Med  ($150-$500)", "High  ($500-$1500)", "Very High  (>$1500)")
+	drp_addCostEst.grid(row =7, column = 1)
+	
+	lbl_actCost = tkinter.Label(editTask_PopUp, text = "Actual Cost:", bg = 'white')
+	lbl_actCost.grid(row=8, column = 0)
+	txt_ActCost = tkinter.Entry(editTask_PopUp, width = 20)
+	txt_ActCost.insert('end', task['tCostAct'])
+	txt_ActCost.grid(row=8,column =1)
+	
+	
+	#Label and dropDown for Status
+	lbl_addStatus = tkinter.Label(editTask_PopUp, text = "Status: ", bg ="white")
+	lbl_addStatus.grid(row=9, column =0)
+	addStatus = tkinter.StringVar(editTask_PopUp)
+	addStatus.set(task['tStatus'])#initial value
+	drp_addStatus = tkinter.OptionMenu(editTask_PopUp, addStatus, "Planned", "Started", "Waiting", "50%", "90%", "Completed!")
+	drp_addStatus.grid(row=9, column=1)
+	
+	#Label and entry fro materials
+	lbl_addMaterials = tkinter.Label(editTask_PopUp, text = "Materials: ", bg = "white")
+	lbl_addMaterials.grid(row=10, column = 0)
+	txt_addMaterials = tkinter.Entry(editTask_PopUp, width = 20)
+	txt_addMaterials.insert('end', printMaterials(task['tMaterials']))
+	txt_addMaterials.grid(row = 10, column = 1)
+	
+	#Add the task
+	#btn_AddTask = tkinter.Button(editTask_PopUp, text = "Add this Task", fg = "green", bg = "white", command =addTaskIn)
+	#btn_AddTask.grid(row=10, column = 0)
+	#Exit popup
+	btn_Done = tkinter.Button(editTask_PopUp, text = "Done", fg = "green", bg = "white", command =editTask_PopUp.destroy)
+	btn_Done.grid(row=11, column = 1)
+	
 
 #PlaceHolder function to test buttons/menus/etc
 def hello():
@@ -770,7 +877,6 @@ btn_filter.grid(row=7, column =0)
 btn_chooRand = tkinter.Button(root, text = "Choose Random", fg = "green", bg = "white", command = chooRand)
 btn_chooRand.grid(row=8, column =0)
 
-"""FIXME --Previously updated label --- label no longer exists"""
 btn_numOfTasks = tkinter.Button(root, text = "Number of Tasks", fg = "green", bg = "white", command = numOfTasks )
 btn_numOfTasks.grid(row=9, column =0)
 
@@ -787,8 +893,11 @@ btn_searchTask.grid(row=11, column =1)
 btn_materialsList = tkinter.Button(root, text = "Create Materials List", fg ='green', bg = "white", command = materialsList)
 btn_materialsList.grid(row = 11, column = 0)
 
+btn_editTask = tkinter.Button(root, text = "Edit Task", fg = "green", bg = 'white', command = editTask)
+btn_editTask.grid(row = 12, column =0)
+
 btn_exit = tkinter.Button(root, text = "Exit", fg = "green", bg = "white", command = exit)
-btn_exit.grid(row=12, column =0)
+btn_exit.grid(row=13, column =0)
 
 btn_save = tkinter.Button(root, text = "Save", fg = "green", bg = "white", command = saveTasks)
 btn_save.grid(row=12, column = 1)
