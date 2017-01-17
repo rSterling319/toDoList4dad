@@ -82,7 +82,7 @@ root.configure(bg="white")
 root.title("To-Do-List")
 
 #set the window size
-root.geometry("325x375+250+50")
+root.geometry("350x375+250+50")
 
 #create empty list
 tasks = []
@@ -855,7 +855,7 @@ btn_addTask.grid(row=1, column =0)
 btn_markComplete = tkinter.Button(root, text = "ok", fg = "green", bg="white", command = markComplete)
 btn_markComplete.grid(row=1, column = 1)
 markStatus = tkinter.StringVar(root)
-markStatus.set("Change Status..")#initial value
+markStatus.set("Quick Change Status..")#initial value
 drp_markStatus = tkinter.OptionMenu(root, markStatus,"Planned", "Started", "Waiting", "50%", "90%", "Completed!")
 drp_markStatus.grid(row =0, column = 1)
 
@@ -900,7 +900,7 @@ btn_exit = tkinter.Button(root, text = "Exit", fg = "green", bg = "white", comma
 btn_exit.grid(row=13, column =0)
 
 btn_save = tkinter.Button(root, text = "Save", fg = "green", bg = "white", command = saveTasks)
-btn_save.grid(row=12, column = 1)
+btn_save.grid(row=13, column = 1)
 
 lb_tasks =  tkinter.Listbox(root, activestyle ='dotbox')
 lb_tasks.grid(row=3, column =1, rowspan = 7)
