@@ -21,10 +21,7 @@ Stats to keep track of:
 -date completed
 -cost
 -
-<<<<<<< HEAD
 
-=======
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 ADD:
 have a materials add, be able to select a multiple to-do items and to a materials list and print/write to text file
 	-get active from main window but adds to a listbox on a separate window
@@ -37,10 +34,8 @@ Search feature
 	-do a percent match.. that way if somethin is mispelled/capitalized it might still show up
 have to add a update/edit task feature where you can enter the time in and other features
 	- i think i can achieve this by just populating the add task with the current selected item
-<<<<<<< HEAD
 
-=======
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
+	
 """
 """	HOW TO: Iterate through data
 print(tasks)
@@ -85,11 +80,7 @@ root.configure(bg="white")
 root.title("To-Do-List")
 
 #set the window size
-<<<<<<< HEAD
-root.geometry("350x375+250+50")
-=======
 root.geometry("325x375+250+50")
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 
 #create empty list
 tasks = []
@@ -711,16 +702,6 @@ def materialsList():
 	btn_closeMat = tkinter.Button(materialsList_PopUp, text = "Close", fg = "green", bg = "white", command= materialsList_PopUp.destroy)
 	btn_closeMat.grid(row=9, column =1)
 	
-<<<<<<< HEAD
-def editTask():
-	"""FIXME - finish the edit task. need to actuall implement the editing(the changes)"""
-	#function to edit the selected task details
-	task = lb_tasks.get("active")
-	
-	#create pop up window to edit details of selected task
-	editTask_PopUp = tkinter.Toplevel()
-	editTask_PopUp.title(task) #displays task name as the window name
-=======
 	
 def editTask():
 	"""FIXME - finish the edit task. need to actually implement the editing(the changes)"""
@@ -746,7 +727,6 @@ def editTask():
 	#create pop up window to edit details of selected task
 	editTask_PopUp = tkinter.Toplevel()
 	editTask_PopUp.title(task)	#displays task name as the window name
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 	editTask_PopUp.geometry("300x400+575+0")
 	
 	for item in tasks:
@@ -793,24 +773,14 @@ def editTask():
 	"""FIXME fix the edit time entry"""
 	lbl_timeStart = tkinter.Label(editTask_PopUp, text ="Time Start:" , bg ="white",justify = "left",anchor = "w")
 	lbl_timeStart.grid(row=5, column =0)
-<<<<<<< HEAD
-	lbl_taskStart = tkinter.Label(editTask_PopUp, text = "something Here", bg ="white",wraplength = 200, justify = "left")
-	lbl_taskStart.grid(row=5, column =1)
-=======
 	#lbl_taskStart = tkinter.Label(editTask_PopUp, text = "something Here", bg ="white",wraplength = 200, justify = "left")
 	#lbl_taskStart.grid(row=5, column =1)
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 	
 	"""FIXME fix the edit time entry"""
 	lbl_timeFinish = tkinter.Label(editTask_PopUp, text ="Time Finish:" , bg ="white",justify = "left",anchor = "w")
 	lbl_timeFinish.grid(row=6, column =0)
-<<<<<<< HEAD
-	lbl_taskFinish = tkinter.Label(editTask_PopUp, text = "Something HERE", bg ="white",wraplength = 200, justify = "left")
-	lbl_taskFinish.grid(row=6, column =1)
-=======
 	#lbl_taskFinish = tkinter.Label(editTask_PopUp, text = "Something HERE", bg ="white",wraplength = 200, justify = "left")
 	#lbl_taskFinish.grid(row=6, column =1)
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 
 	
 	#label and DropDown box for add cost estimate
@@ -843,16 +813,6 @@ def editTask():
 	txt_addMaterials.insert('end', printMaterials(task['tMaterials']))
 	txt_addMaterials.grid(row = 10, column = 1)
 	
-<<<<<<< HEAD
-	#Add the task
-	#btn_AddTask = tkinter.Button(editTask_PopUp, text = "Add this Task", fg = "green", bg = "white", command =addTaskIn)
-	#btn_AddTask.grid(row=10, column = 0)
-	#Exit popup
-	btn_Done = tkinter.Button(editTask_PopUp, text = "Done", fg = "green", bg = "white", command =editTask_PopUp.destroy)
-	btn_Done.grid(row=11, column = 1)
-	
-
-=======
 	#Update the task and exit
 	btn_UpdateTask = tkinter.Button(editTask_PopUp, text = "Update this Task", fg = "green", bg = "white", command =replaceTask)
 	btn_UpdateTask.grid(row=10, column = 0)
@@ -861,8 +821,6 @@ def editTask():
 	#btn_Done.grid(row=11, column = 1)
 	
 
-
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 #PlaceHolder function to test buttons/menus/etc
 def hello():
 	print("hello")
@@ -912,11 +870,7 @@ btn_addTask.grid(row=1, column =0)
 btn_markComplete = tkinter.Button(root, text = "ok", fg = "green", bg="white", command = markComplete)
 btn_markComplete.grid(row=1, column = 1)
 markStatus = tkinter.StringVar(root)
-<<<<<<< HEAD
 markStatus.set("Quick Change Status..")#initial value
-=======
-markStatus.set("Change Status..")#initial value
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 drp_markStatus = tkinter.OptionMenu(root, markStatus,"Planned", "Started", "Waiting", "50%", "90%", "Completed!")
 drp_markStatus.grid(row =0, column = 1)
 
@@ -961,11 +915,7 @@ btn_exit = tkinter.Button(root, text = "Exit", fg = "green", bg = "white", comma
 btn_exit.grid(row=13, column =0)
 
 btn_save = tkinter.Button(root, text = "Save", fg = "green", bg = "white", command = saveTasks)
-<<<<<<< HEAD
-btn_save.grid(row=13, column = 1)
-=======
 btn_save.grid(row=12, column = 1)
->>>>>>> a32d0ed4990930ce2d84cfc181151829b57231b8
 
 lb_tasks =  tkinter.Listbox(root, activestyle ='dotbox')
 lb_tasks.grid(row=3, column =1, rowspan = 7)
