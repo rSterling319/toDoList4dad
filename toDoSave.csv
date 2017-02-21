@@ -1,0 +1,10 @@
+tName,tTimeStart,tLocation,tStatus,tPriority,tDescription,tTimeEst,tTimeFinish,tCostEst,tCostAct,tMaterials
+Task,0001-01-01 01:01:01,loc,Started,None,des,None,0001-01-01 01:01:01,None,0,['']
+Grade,0001-01-01 01:01:01,Right here,Completed!,High,Edie-Marie must grade like a crazy woman!,Long,0001-01-01 01:01:01,Med  ($150-$500),0,['']
+Eat dinner,2016-12-20 14:56:37,A restaurant?,Started,Med,"Eat some dinner, keep myself fed",Short,2016-12-20 14:49:48,Low  (<$150),0,['']
+Grocery shop,2016-12-19 14:53:48,Dismals,Completed!,High,Buy Paprika,Short,2016-12-20 13:01:07,Low  (<$150),0,['']
+Write thank yous,2016-12-20 11:38:30,wherever,Planned,Med,Write thank you notes to dr. Friedman and dr. Basnet,Med,0001-01-01 01:01:01,None ($0),0,"['Stationary', 'pen', 'envelope']"
+240v outlet in kitchen,2016-12-23 15:07:18,kitchen,Planned,High,for speed oven,Short,0001-01-01 01:01:01,Med  ($150-$500),0,['Hired']
+Clean bathrooms,2016-12-23 16:23:14,"Bathrooms(1,2,3)",Planned,High,"Clean bathrooms 1, 2, 3",Med,0001-01-01 01:01:01,None ($0),0,"['Scrubber', 'Cleaner', 'paper towels', 'windex']"
+Pick up sister,2016-12-23 16:25:41,Denver,Planned,High,Drive to dia and pick up helen,Med,0001-01-01 01:01:01,Low  (<$150),0,"['Car', 'Gas', 'Coffee']"
+Make to-do-list,2017-01-10 22:50:35.848489,This mac,Started,Low,Make a todo list for dad,Long,0001-01-01 01:01:01,None ($0),0,"['computer', 'brain', 'books and such']"
